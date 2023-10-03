@@ -1,0 +1,46 @@
+name: Update latest chapter
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+      with:
+        token: ${{ secrets.TOKEN }}
+    - name: Set Git user
+      run: |
+        git config --global user.email "jindaxian@qq.com"
+        git config --global user.name "sasa012"
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.x
+    - name: Set file permissions
+      run: chmod 777 config.ini 
+    - name: Install dependencies
+      run: pip install requests beautifulsoup4 configparser wxpusher
+
+    - name: Run script
+      env:
+        WX_UID: ${{ secrets.WX_UID }}
+        WX_TOKEN: ${{ secrets.WX_TOKEN }}
+      run: |
+        python main.py
+    - name: Commit changes
+      run: |
+        set -e
+        if git diff --quiet; then
+          exit 0
+        else
+          git commit -a -m "Update"
+        fi
+    - name: Push changes
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.TOKEN }}
