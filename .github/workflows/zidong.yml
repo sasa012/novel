@@ -2,7 +2,7 @@ name: Update latest chapter
 
 on:
   schedule:
-    - cron: '* * * 32 2'
+    - cron: '10 * * * *'
 
 jobs:
   update:
