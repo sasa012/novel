@@ -18,7 +18,7 @@ latest_chapter_id = config.getint('book', 'latest_chapter_id')
 url = 'https://www.qidian.com/book/1021624434/'
 r = requests.get(url, headers=headers)
 soup = BeautifulSoup(r.text, 'html.parser')
-latest_chapter_url = soup.find('a', class_='latest-chapter')['href']
+latest_chapter_url = soup.find('a', class_='book-latest-chapter')['href']
 latest_chapter_id_new = int(latest_chapter_url.split('/')[-2])
 
 # 比较最新章节id并输出结果
